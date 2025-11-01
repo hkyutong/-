@@ -8,8 +8,7 @@ import json
 from sorawm.configs import WATER_MARK_DETECT_YOLO_WEIGHTS, WATER_MARK_DETECT_YOLO_WEIGHTS_HASH_JSON
 
 DETECTOR_URL = "https://github.com/linkedlist771/SoraWatermarkCleaner/releases/download/V0.0.1/best.pt"
-REMOTE_MODEL_VERSION_URL = "https://raw.githubusercontent.com/linkedlist771/SoraWatermarkCleaner/main/version/model_version.json"
-
+REMOTE_MODEL_VERSION_URL = "https://raw.githubusercontent.com/linkedlist771/SoraWatermarkCleaner/refs/heads/main/model_version.json"
 
 def generate_sha256_hash(file_path: Path) -> str:
     with open(file_path, "rb") as f:
@@ -73,7 +72,7 @@ def download_detector_weights(force_download: bool = False):
             json.dump({"sha256": local_sha256_hash}, f)
     remote_sha256_hash = None 
     try:
-        response = requests.get(REMOTE_MODEL_VERSION_URL, timeout=3)
+        response = requests.get(REMOTE_MODEL_VERSION_URL, timeout=10)
         response.raise_for_status()
         remote_sha256_hash = response.json().get("sha256", None)
     except requests.exceptions.RequestException as e:
@@ -82,7 +81,7 @@ def download_detector_weights(force_download: bool = False):
 
     ## 3. after the compare, if there is a new version, download it and replace the local and 
     ## update the hash
-            
+    logger.debug(f"Local hash: {local_sha256_hash}, Remote hash: {remote_sha256_hash}")
     if remote_sha256_hash is None:
        pass 
     else:
@@ -90,4 +89,4 @@ def download_detector_weights(force_download: bool = False):
             logger.info(f"Hash mismatch detected, updating model...")
             download_detector_weights(force_download=True)
         else:
-            logger.debug("Model is up-to-date")  # 🔧 修改5: 添加日志
+            logger.debug("Model is up-to-date") 
