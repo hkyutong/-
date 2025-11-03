@@ -10,8 +10,8 @@ For **Windows** users - No installation required!
 - https://drive.google.com/file/d/1ujH28aHaCXGgB146g6kyfz3Qxd-wHR1c/view?usp=share_link
 
 **Baidu Pan | 百度网盘:**
-- Link | 链接: https://pan.baidu.com/s/1_tdgs-3-dLNn0IbufIM75g?pwd=fiju
-- Extract Code | 提取码: `fiju`
+- Link | 链接: https://pan.baidu.com/s/1onMom81mvw2c6PFkCuYzdg?pwd=jusu
+- Extract Code | 提取码: `jusu`
 
 ## Usage | 使用方法
 
