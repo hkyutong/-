@@ -18,10 +18,11 @@ This project provides an elegant way to remove the sora watermark in the sora2 g
 </table>
 ⭐️: 
 
-1. **For the new watermark with username,  the Yolo weights has been updated, try the new version watermark detect model, it should work better. **
+1. **We support batch processing now.**
+2. **For the new watermark with username,  the Yolo weights has been updated, try the new version watermark detect model, it should work better.**
 
-2. **We have uploaded the labelled datasets into huggingface, check this [dataset](https://huggingface.co/datasets/LLinked/sora-watermark-dataset) out. Free free to train your custom detector model or improve our model!**
-3. **One-click portable build is available** — [Download here](#3-one-click-portable-version) for Windows users! No installation required.
+3. **We have uploaded the labelled datasets into huggingface, check this [dataset](https://huggingface.co/datasets/LLinked/sora-watermark-dataset) out. Free free to train your custom detector model or improve our model!**
+4. **One-click portable build is available** — [Download here](#3-one-click-portable-version) for Windows users! No installation required.
 
 ---
 
@@ -109,6 +110,10 @@ streamlit run app.py
 ```
 
 <img src="resources/app.png" style="zoom: 25%;" />
+
+Batch processing is also supported, now you can drag a folder or select multiple files to process.
+<img src="assests/streamlit_batch.png" style="zoom: 50%;" />
+
 
 ## 5. WebServer
 

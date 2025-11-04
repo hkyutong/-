@@ -18,11 +18,11 @@
 </table>
 ⭐️: 
 
-1. **YOLO 权重已更新** — 请尝试新版本的水印检测模型，效果会更好！
+1. **我们现在支持批量处理了。**
+2. **对于带用户名的新水印，Yolo 权重已更新** — 请尝试新版本的水印检测模型，效果会更好！
 
-2. **数据集已开源** — 我们已经将标注好的数据集上传到了 Hugging Face，查看[此数据集](https://huggingface.co/datasets/LLinked/sora-watermark-dataset)。欢迎训练你自己的检测模型或改进我们的模型！
-
-3. **一键便携版已发布** — [点击这里下载](#3-一键便携版)，Windows 用户无需安装即可使用！
+3. **数据集已开源** — 我们已经将标注好的数据集上传到了 Hugging Face，查看[此数据集](https://huggingface.co/datasets/LLinked/sora-watermark-dataset)。欢迎训练你自己的检测模型或改进我们的模型！
+4. **一键便携版已发布** — [点击这里下载](#3-一键便携版)，Windows 用户无需安装即可使用！
 
 ---
 
@@ -109,6 +109,10 @@ streamlit run app.py
 ```
 
 <img src="resources/app.png" style="zoom: 25%;" />
+
+现在也支持批量处理，你可以拖入一个文件夹或选择多个文件进行处理。
+<img src="assests/streamlit_batch.png" style="zoom: 50%;" />
+
 
 ## 5. WebServer
 

@@ -15,11 +15,38 @@ from sorawm.utils.imputation_utils import (
     find_idxs_interval,
 )
 
+VIDEO_EXTENSIONS = [".mp4", ".avi", ".mov", ".mkv", ".flv", ".wmv", ".webm"]
 
 class SoraWM:
     def __init__(self):
         self.detector = SoraWaterMarkDetector()
         self.cleaner = WaterMarkCleaner()
+
+    def run_batch(self, input_video_dir_path: Path,
+        output_video_dir_path: Path | None = None,
+        progress_callback: Callable[[int], None] | None = None,
+        ):
+        if output_video_dir_path is None:
+            output_video_dir_path = input_video_dir_path.parent / "watermark_removed"
+            logger.warning(f"output_video_dir_path is not set, using {output_video_dir_path} as output_video_dir_path")
+        output_video_dir_path.mkdir(parents=True, exist_ok=True)        
+        input_video_paths = []
+        for ext in VIDEO_EXTENSIONS:
+            input_video_paths.extend(input_video_dir_path.rglob(f"*{ext}"))
+        
+        video_lengths = len(input_video_paths)
+        logger.info(f"Found {video_lengths} video(s) to process")
+        
+        for idx, input_video_path in enumerate(tqdm(input_video_paths, desc="Processing videos")):
+            output_video_path = output_video_dir_path / input_video_path.name            
+            if progress_callback:
+                def batch_progress_callback(single_video_progress: int):
+                    overall_progress = int((idx / video_lengths) * 100 + (single_video_progress / video_lengths))
+                    progress_callback(min(overall_progress, 100))
+                
+                self.run(input_video_path, output_video_path, progress_callback=batch_progress_callback)
+            else:
+                self.run(input_video_path, output_video_path, progress_callback=None)
 
     def run(
         self,
