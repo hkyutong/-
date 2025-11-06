@@ -61,6 +61,24 @@ uv sync
 
 训练好的 YOLO 权重将存储在 `resources` 目录中，文件名为 `best.pt`。它将从 https://github.com/linkedlist771/SoraWatermarkCleaner/releases/download/V0.0.1/best.pt 自动下载。`Lama` 模型从 https://github.com/Sanster/models/releases/download/add_big_lama/big-lama.pt 下载，并将存储在 torch 缓存目录中。两者都是自动下载的，如果失败，请检查你的网络状态。
 
+3. 批量处理
+Use the cli.py for batch processing
+
+```
+python cli.py [-h] -i INPUT -o OUTPUT [-p PATTERN]
+```
+
+examples:
+
+```
+# Process all .mp4 files in input folder
+python batch_process.py -i /path/to/input -o /path/to/output
+# Process all .mov files
+python batch_process.py -i /path/to/input -o /path/to/output --pattern "*.mov"
+# Process all video files (mp4, mov, avi)
+python batch_process.py -i /path/to/input -o /path/to/output --pattern "*.{mp4,mov,avi}"
+```
+
 ## 3. 一键便携版
 
 对于不想手动安装的用户，我们提供了**一键便携版本**，包含所有预配置的依赖项，开箱即用。
