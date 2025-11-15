@@ -1,7 +1,6 @@
-```markdown
-# SoraWatermarkCleaner
+# Sora2 祛除水印
 
-[English](README.md) | **中文**
+**中文**
 
 > **优雅、纯深度学习驱动的 Sora 视频水印移除工具**
 
@@ -66,7 +65,6 @@ uv sync
 
 # 2. 激活虚拟环境
 source .venv/bin/activate
-```
 
 > 模型自动下载：
 > - `best.pt` → `resources/best.pt`（GitHub Release）
