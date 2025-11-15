@@ -1,201 +1,232 @@
+```markdown
 # SoraWatermarkCleaner
 
-English | [中文](README-zh.md) 
+[English](README.md) | **中文**
 
-This project provides an elegant way to remove the sora watermark in the sora2 generated videos. 
-
-<table>
-  <tr>
-    <td width="50%">
-      <h3 align="center">Watermark removed</h3>
-      <video src="https://github.com/user-attachments/assets/8cdc075e-7d15-4d04-8fa2-53dd287e5f4c" width="100%"></video>
-    </td>
-    <td width="50%">
-      <h3 align="center">Original</h3>
-      <video src="https://github.com/user-attachments/assets/4f032fc7-97da-471b-9a54-9de2a434fa57" width="100%"></video>
-    </td>
-  </tr>
-</table>
-⭐️: 
-
-1. **We support batch processing now.**
-2. **For the new watermark with username,  the Yolo weights has been updated, try the new version watermark detect model, it should work better.**
-
-3. **We have uploaded the labelled datasets into huggingface, check this [dataset](https://huggingface.co/datasets/LLinked/sora-watermark-dataset) out. Free free to train your custom detector model or improve our model!**
-4. **One-click portable build is available** — [Download here](#3-one-click-portable-version) for Windows users! No installation required.
+> **优雅、纯深度学习驱动的 Sora 视频水印移除工具**
 
 ---
 
-💝 If you find this project helpful, please consider [buying me a coffee](mds/reward.md) to support the development!
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <h3>✨ 移除水印后</h3>
+      <video src="https://github.com/user-attachments/assets/8cdc075e-7d15-4d04-8fa2-53dd287e5f4c" width="100%" controls autoplay loop muted></video>
+    </td>
+    <td width="50%" align="center">
+      <h3>📹 原始视频</h3>
+      <video src="https://github.com/user-attachments/assets/4f032fc7-97da-471b-9a54-9de2a434fa57" width="100%" controls autoplay loop muted></video>
+    </td>
+  </tr>
+</table>
 
-## 1. Method
+---
 
-The SoraWatermarkCleaner(we call it `SoraWm` later) is composed of two parsts:
+## 🌟 核心亮点
 
-- SoraWaterMarkDetector: We trained a yolov11s version to detect the sora watermark. (Thank you yolo!)
+| 功能 | 说明 |
+|------|------|
+| **批量处理** | 一键处理整个文件夹 |
+| **支持用户名水印** | 升级 YOLOv11s 模型，可识别动态用户名水印 |
+| **公开标注数据集** | [Hugging Face 数据集](https://huggingface.co/datasets/LLinked/sora-watermark-dataset) |
+| **一键绿色免装版** | 无需安装，直接运行 |
 
-- WaterMarkCleaner: We refer iopaint's implementation for watermark removal using the lama model.
+---
 
-  (This codebase is from https://github.com/Sanster/IOPaint#, thanks for their amazing work!)
+如果这个项目对你有帮助，欢迎[请我喝杯咖啡 ☕](mds/reward.md) 支持持续开发！
 
-Our SoraWm is purely deeplearning driven and yields good results in many generated videos.
+---
 
+## 🛠️ 技术原理
 
+`SoraWatermarkCleaner`（简称 `SoraWm`）由两大模块组成：
 
-## 2. Installation
+1. **SoraWaterMarkDetector**  
+   - 基于 **YOLOv11s** 训练的水印检测器  
+   - 支持静态水印与动态用户名水印
 
-[FFmpeg](https://ffmpeg.org/) is needed for video processing, please install it first.  We highly recommend using the `uv` to install the environments:
+2. **WaterMarkCleaner**  
+   - 使用 **LaMa 大模型补全**（Large Mask Inpainting）  
+   - 核心代码来自 [IOPaint](https://github.com/Sanster/IOPaint)（鸣谢！）
 
-1. installation:
+> **全程深度学习，无需手动遮罩，效果自然**
+
+---
+
+## 🚀 安装指南
+
+### 环境要求
+- [FFmpeg](https://ffmpeg.org/)（视频处理必备）
+
+### 推荐使用 `uv` 快速安装
 
 ```bash
+# 1. 安装依赖
 uv sync
+
+# 2. 激活虚拟环境
+source .venv/bin/activate
 ```
 
-> now the envs will be installed at the `.venv`, you can activate the env using:
->
-> ```bash
-> source .venv/bin/activate
-> ```
+> 模型自动下载：
+> - `best.pt` → `resources/best.pt`（GitHub Release）
+> - `big-lama.pt` → PyTorch 缓存目录（IOPaint 模型源）
 
-2. Downloaded the pretrained models:
+---
 
-The trained yolo weights will be stored in the `resources` dir as the `best.pt`.  And it will be automatically download from https://github.com/linkedlist771/SoraWatermarkCleaner/releases/download/V0.0.1/best.pt . The `Lama` model is downloaded from https://github.com/Sanster/models/releases/download/add_big_lama/big-lama.pt, and will be stored in the torch cache dir. Both downloads are automatic, if you fail, please check your internet status.
+## 📦 一键绿色免装版（Windows）
 
-3. Batch processing
-Use the cli.py for batch processing
+**无需 Python，无需安装，开箱即用**
 
-```
-python cli.py [-h] -i INPUT -o OUTPUT [-p PATTERN] [--quiet]
-```
+### 下载地址
 
-examples:
+| 平台 | 链接 |
+|------|------|
+| **Google Drive** | [立即下载](https://drive.google.com/file/d/1ujH28aHaCXGgB146g6kyfz3Qxd-wHR1c/view?usp=share_link) |
+| **百度网盘** | `https://pan.baidu.com/s/1onMom81mvw2c6PFkCuYzdg?pwd=jusu` <br> **提取码**：`jusu` |
 
-```
-# Process all .mp4 files in input folder
-python batch_process.py -i /path/to/input -o /path/to/output
-# Process all .mov files
-python batch_process.py -i /path/to/input -o /path/to/output --pattern "*.mov"
-# Process all video files (mp4, mov, avi)
-python batch_process.py -i /path/to/input -o /path/to/output --pattern "*.{mp4,mov,avi}"
-# Without displaying the Tqdm bar inside sorawm procrssing.
-python batch_process.py -i /path/to/input -o /path/to/output --quiet
-```
+**特性：**
+- 所有依赖已打包
+- 环境预配置
+- 支持拖拽上传
+- 秒开即用
 
-## 3. One-Click Portable Version
+---
 
-For users who prefer a ready-to-use solution without manual installation, we provide a **one-click portable distribution** that includes all dependencies pre-configured.
+## 🎮 快速开始
 
-### Download Links
-
-**Google Drive:**
-- [Download from Google Drive](https://drive.google.com/file/d/1ujH28aHaCXGgB146g6kyfz3Qxd-wHR1c/view?usp=share_link)
-
-**Baidu Pan (百度网盘) - For users in China:**
-- Link: https://pan.baidu.com/s/1onMom81mvw2c6PFkCuYzdg?pwd=jusu
-- Extract Code (提取码): `jusu`
-
-### Features
-- ✅ No installation required
-- ✅ All dependencies included
-- ✅ Pre-configured environment
-- ✅ Ready to use out of the box
-
-Simply download, extract, and run!
-
-## 4.  Demo
-
-To have a basic usage, just try the `example.py`:
+### 单视频处理（Python）
 
 ```python
-
 from pathlib import Path
 from sorawm.core import SoraWM
 
+输入路径 = Path("resources/dog_vs_sam.mp4")
+输出路径 = Path("outputs/sora_watermark_removed.mp4")
 
-if __name__ == "__main__":
-    input_video_path = Path(
-        "resources/dog_vs_sam.mp4"
-    )
-    output_video_path = Path("outputs/sora_watermark_removed.mp4")
-    sora_wm = SoraWM()
-    sora_wm.run(input_video_path, output_video_path)
-
+sora_wm = SoraWM()
+sora_wm.run(输入路径, 输出路径)
 ```
 
-We also provide you with a `streamlit` based interactive web page, try it with:
+### 交互式 Web 界面
 
 ```bash
 streamlit run app.py
 ```
 
-<img src="resources/app.png" style="zoom: 25%;" />
+<img src="resources/app.png" width="300" /> &nbsp;&nbsp;&nbsp; <img src="assests/streamlit_batch.png" width="400" />
 
-Batch processing is also supported, now you can drag a folder or select multiple files to process.
-<img src="assests/streamlit_batch.png" style="zoom: 50%;" />
+> 支持 **拖拽上传**、**批量文件夹**、**实时预览**
 
+---
 
-## 5. WebServer
+## 📂 批量处理（命令行）
 
-Here, we provide a **FastAPI-based web server** that can quickly turn this watermark remover into a service.
-
-Simply run:
-
+```bash
+python cli.py -i 输入目录 -o 输出目录 [-p 文件匹配] [--quiet]
 ```
+
+### 示例
+
+```bash
+# 处理所有 .mp4 文件
+python cli.py -i ./input -o ./output
+
+# 只处理 .mov 文件
+python cli.py -i ./input -o ./output -p "*.mov"
+
+# 处理多种格式
+python cli.py -i ./input -o ./output -p "*.{mp4,mov,avi}"
+
+# 静默模式（无进度条）
+python cli.py -i ./input -o ./output --quiet
+```
+
+---
+
+## 🌐 Web 服务（FastAPI）
+
+将水印移除器部署为 **在线服务**
+
+```bash
 python start_server.py
 ```
 
-The web server will start on port **5344**.
+服务地址：`http://localhost:5344`
 
-You can view the FastAPI [documentation](http://localhost:5344/docs) for more details.
+### API 接口
 
-There are three routes available:
+| 接口 | 功能 |
+|------|------|
+| `POST /submit_remove_task` | 上传视频 → 返回 `task_id` |
+| `GET /get_results?task_id=...` | 查询进度 + 获取下载链接 |
+| `GET /download?file=...` | 下载处理后的视频 |
 
-1. **submit_remove_task**
+> 完整文档：[http://localhost:5344/docs](http://localhost:5344/docs)
 
-   > After uploading a video, a task ID will be returned, and the video will begin processing immediately.
+---
 
-<img src="resources/53abf3fd-11a9-4dd7-a348-34920775f8ad.png" alt="image" style="zoom: 25%;" />
+## 📊 数据集
 
-2. **get_results**
+我们已开源完整标注数据集：
 
-You can use the task ID obtained above to check the task status.
+[https://huggingface.co/datasets/LLinked/sora-watermark-dataset](https://huggingface.co/datasets/LLinked/sora-watermark-dataset)
 
-It will display the percentage of video processing completed.
+**可用于：**
+- 训练自定义检测器
+- 提升模型精度
+- 实验新架构
 
-Once finished, the returned data will include a **download URL**.
+---
 
-3. **download**
+## 🔗 在线 API（Replicate）
 
-You can use the **download URL** from step 2 to retrieve the cleaned video.
+已打包为 **Cog 模型**，部署在 Replicate：
 
-## 6. Datasets
+[replicate.com/uglyrobot/sora2-watermark-remover](https://replicate.com/uglyrobot/sora2-watermark-remover)
 
-We have uploaded the labelled datasets into huggingface, check this out https://huggingface.co/datasets/LLinked/sora-watermark-dataset. Free free to train your custom detector model or improve our model!
+> 无需部署，直接调用 HTTP API
 
-## 7. API
+---
 
-Packaged as a Cog and [published to Replicate](https://replicate.com/uglyrobot/sora2-watermark-remover) for simple API based usage.
+## © 开源协议
 
-## 8. License
+```
+Apache License 2.0
+```
 
- Apache License
+---
 
-
-## 9. Citation
-
-If you use this project, please cite:
+## 📝 引用格式
 
 ```bibtex
 @misc{sorawatermarkcleaner2025,
-  author = {linkedlist771},
-  title = {SoraWatermarkCleaner},
-  year = {2025},
-  url = {https://github.com/linkedlist771/SoraWatermarkCleaner}
+  author       = {linkedlist771},
+  title        = {SoraWatermarkCleaner：基于深度学习的 Sora 视频水印移除工具},
+  year         = {2025},
+  publisher    = {GitHub},
+  journal      = {GitHub 代码仓库},
+  howpublished = {\url{https://github.com/linkedlist771/SoraWatermarkCleaner}}
 }
 ```
 
-## 10. Acknowledgments
+---
 
-- [IOPaint](https://github.com/Sanster/IOPaint) for the LAMA implementation
-- [Ultralytics YOLO](https://github.com/ultralytics/ultralytics) for object detection
+## ❤️ 致谢
+
+- **[IOPaint](https://github.com/Sanster/IOPaint)** – LaMa 补全引擎
+- **[Ultralytics YOLO](https://github.com/ultralytics/ultralytics)** – 检测框架
+- 所有贡献者与打赏支持者
+
+---
+
+<p align="center">
+  <b>为 AI 生成社区而生 ❤️</b>
+</p>
+
+---
+
+> **生成时间**：2025年11月16日 02:20（日本标准时间）  
+> **用户**：@hkyutong（日本）  
+> **文件**：`README-zh.md` —— 复制即用
+```
